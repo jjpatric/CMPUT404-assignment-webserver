@@ -1,5 +1,6 @@
 #  coding: utf-8 
 import socketserver
+import http.server
 
 # Copyright 2013 Abram Hindle, Eddie Antonio Santos
 # 
@@ -26,13 +27,8 @@ import socketserver
 
 # try: curl -v -X GET http://127.0.0.1:8080/
 
-
-class MyWebServer(socketserver.BaseRequestHandler):
-    
-    def handle(self):
-        self.data = self.request.recv(1024).strip()
-        print ("Got a request of: %s\n" % self.data)
-        self.request.sendall(bytearray("OK",'utf-8'))
+# used http://docs.python.org/3.8/library/http.server.html
+MyWebServer = http.server.SimpleHTTPRequestHandler
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 8080
