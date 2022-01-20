@@ -1,6 +1,4 @@
 #  coding: utf-8 
-from asyncio import format_helpers
-from email.mime import base
 import socketserver
 from pathlib import Path
 from urllib import request
@@ -33,7 +31,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
 
     def handle(self):
         self.data = self.request.recv(1024).strip()
-        print ("Got a request of:\n", self.data.decode('utf-8'))
+        #print ("Got a request of:\n", self.data.decode('utf-8'))
 
         data_split = self.data.decode('utf-8').split()
         if len(data_split) < 2:
@@ -47,7 +45,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
             self.request.sendall(bytearray("HTTP/1.1 405 Method Not Allowed\r\n\r\n",'utf-8'))
             return
         
-        print ("Recieved request for resource {}".format(resource))
+        #print ("Recieved request for resource {}".format(resource))
         
         # Check for sneaky hackers i.e. '..'
         if ".." in resource:
@@ -75,12 +73,12 @@ class MyWebServer(socketserver.BaseRequestHandler):
                 mime_type = "css"
             default_str = "HTTP/1.1 200 OK\r\nContent-Type: text/{}\r\n\r\n".format(mime_type)
             http_response = default_str + m_file.read()
-            print("\nSending response to client:\n", http_response)
+            #print("\nSending response to client:\n", http_response)
             self.request.sendall(bytearray(http_response,'utf-8'))
         else:
             # Bad resource request 404 not found
             self.request.sendall(bytearray("HTTP/1.1 404 Not FOUND!\r\n\r\n",'utf-8'))
-        print ()
+        #print ()
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 8080
