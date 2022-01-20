@@ -39,6 +39,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
         if len(data_split) < 2:
             # Return 400 Bad Request
             self.request.sendall(bytearray("HTTP/1.1 400 Bad Request\r\n\r\n",'utf-8'))
+            return
         req_type = self.data.decode('utf-8').split()[0]
         resource = self.data.decode('utf-8').split()[1]
 
