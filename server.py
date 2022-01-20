@@ -37,8 +37,8 @@ class MyWebServer(socketserver.BaseRequestHandler):
 
         data_split = self.data.decode('utf-8').split()
         if len(data_split) < 2:
-            print("ERROR: input data is bad")
-            # Return something here?
+            # Return 400 Bad Request
+            self.request.sendall(bytearray("HTTP/1.1 400 Bad Request\r\n\r\n",'utf-8'))
         req_type = self.data.decode('utf-8').split()[0]
         resource = self.data.decode('utf-8').split()[1]
 
@@ -58,8 +58,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
 
         # add index.html to directories
         if Path(local_resource).is_dir():
-            # Moved deep deeper
-            print("FOOO ", resource[-1])
+            # Fix bad directory names with 301
             if resource[-1] != "/":
                 self.request.sendall(bytearray("HTTP/1.1 301 Moved Permanently\r\nLocation: http://127.0.0.1:8080{}/\r\n\r\n".format(resource),'utf-8'))
                 return
